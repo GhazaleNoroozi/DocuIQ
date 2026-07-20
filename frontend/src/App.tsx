@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import UploadDocument from "./components/UploadDocument";
+
 
 function App() {
 
@@ -14,11 +16,11 @@ function App() {
 
   }, []);
 
-
   return (
     <>
       <h1>DocuIQ</h1>
       <p>{message}</p>
+      <UploadDocument />
     </>
   );
 }
