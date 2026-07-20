@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import multer from "multer";
+import pdf from "pdf-parse";
+import fs from "fs/promises";
 
 
 const app = express();
@@ -15,11 +17,18 @@ app.get("/api/message", (req, res) => {
     });
 });
 
-app.post("/api/documents", upload.single("file"), (req, res) => {
+app.post("/api/documents", upload.single("file"), async (req, res) => {
     console.log(req.file);
+    if (!req.file) {
+        return res.status(400).json({
+            message: "No file uploaded"
+        });
+    }
+    const fileBuffer = await fs.readFile(req.file.path);
+    const data = await pdf(fileBuffer);
 
     res.json({
-        message: "File uploaded"
+        message: data.text
     });
 });
 
