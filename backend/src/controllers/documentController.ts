@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { extractTextFromPDF } from "../services/pdfService";
+import { summarize } from "../services/llmService";
 
 export async function uploadDocument(
     req: Request,
@@ -13,10 +14,12 @@ export async function uploadDocument(
         }
 
         const text = await extractTextFromPDF(req.file.path);
+        const summary = await summarize(text);
 
         return res.json({
             message: "Document processed successfully",
-            text: text
+            text: text,
+            summary: summary
         });
 
     } catch (error) {

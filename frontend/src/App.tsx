@@ -5,6 +5,7 @@ import UploadDocument from "./components/UploadDocument";
 function App() {
 
   const [message, setMessage] = useState("");
+  const [summary, setSummary] = useState<string>("");
 
   useEffect(() => {
 
@@ -20,7 +21,14 @@ function App() {
     <>
       <h1>DocuIQ</h1>
       <p>{message}</p>
-      <UploadDocument />
+      <UploadDocument setSummary={setSummary} />
+
+      {summary && (<div>
+        <h2>Summary</h2>
+        <p>{summary}</p>
+      </div>
+      )}
+
     </>
   );
 }

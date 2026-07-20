@@ -1,6 +1,10 @@
 import { useState } from "react";
 
-function UploadDocument() {
+type UploadDocumentProps = {
+    setSummary: (summary: string) => void;
+};
+
+function UploadDocument({ setSummary }: UploadDocumentProps) {
     const [file, setFile] = useState<File | null>(null);
 
     const handleUpload = async () => {
@@ -21,7 +25,7 @@ function UploadDocument() {
         );
 
         const data = await response.json();
-
+        setSummary(data.summary);
         console.log(data);
     };
 
