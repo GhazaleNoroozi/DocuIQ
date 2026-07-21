@@ -26,9 +26,20 @@ function ChatAboutDocument() {
     }
 
     return (
-        <div>
-            <h2>Ask about your document</h2>
+    <div>
 
+        <h2>Ask about your document</h2>
+        
+        <div className="answer-area">
+            {answer && (
+                <>
+                    <h3>Answer:</h3>
+                    <p>{answer}</p>
+                </>
+            )}
+        </div>
+
+        <div className="input-area">
             <input
                 type="text"
                 value={question}
@@ -39,14 +50,9 @@ function ChatAboutDocument() {
             <button onClick={askQuestion}>
                 Ask
             </button>
-
-            {answer && (
-                <div>
-                    <h3>Answer:</h3>
-                    <p>{answer}</p>
-                </div>
-            )}
         </div>
+
+    </div>
     );
 }
 
