@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import UploadDocument from "./components/UploadDocument";
+import ChatDocument from "./components/ChatAboutDocument";
 
 
 function App() {
@@ -22,7 +23,7 @@ function App() {
       <h1>DocuIQ</h1>
       <p>{message}</p>
       <UploadDocument setSummary={setSummary} />
-
+      <ChatDocument />
       {summary && (<div>
         <h2>Summary</h2>
         <p>{summary}</p>
