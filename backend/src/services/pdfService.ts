@@ -1,14 +1,5 @@
 import fs from "fs/promises";
 import { PDFParse } from "pdf-parse";
-let currentDocument = "";
-
-export function setCurrentDocument(text: string) {
-    currentDocument = text;
-}
-
-export function getCurrentDocument() {
-    return currentDocument;
-}
 
 export async function extractTextFromPDF(filePath: string) {
     const fileBuffer = await fs.readFile(filePath);
@@ -23,4 +14,3 @@ export async function extractTextFromPDF(filePath: string) {
 
     return result.text;
 }
-
