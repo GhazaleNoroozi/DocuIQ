@@ -35,22 +35,24 @@ function ChatAboutDocument() {
     }
 
     return (
-    <div>
-
-        <h2>Ask about your document</h2>
-        
-        <div className="answer-area">
-            {messages.map((message, index) => (
-                <div key={index}>
-                    <h3>
-                        {message.role === "user" ? "You" : "DocuIQ"}
-                    </h3>
-
-                    <p>{message.text}</p>
-                </div> 
-            ))}
+    <section className="document-section chat">
+        <div className="section-header">
+            <h2>Ask about your document</h2>
         </div>
+        
+        <div className="section-content">
+            <div className="answer-area">
+                {messages.map((message, index) => (
+                    <div key={index}>
+                        <h3>
+                            {message.role === "user" ? "You" : "DocuIQ"}
+                        </h3>
 
+                        <p>{message.text}</p>
+                    </div> 
+                ))}
+            </div>
+        </div>
         <div className="input-area">
             <input
                 type="text"
@@ -63,8 +65,7 @@ function ChatAboutDocument() {
                 Ask
             </button>
         </div>
-
-    </div>
+    </section>
     );
 }
 
