@@ -7,7 +7,6 @@ import "./App.css";
 function App() {
   const [message, setMessage] = useState("");
   const [summary, setSummary] = useState<string>("");
-  const [summaryOpen, setSummaryOpen] = useState(true);
 
   useEffect(() => {
     fetch("http://localhost:5000/api/message")
@@ -25,7 +24,7 @@ function App() {
       </header>
 
       <UploadDocument setSummary={setSummary} />
-      
+
       {summary && (
         <Summary summary={summary} />
         )}
