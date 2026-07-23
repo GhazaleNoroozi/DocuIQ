@@ -2,17 +2,21 @@ import { useState } from "react";
 
 function ChatAboutDocument() {
     const [question, setQuestion] = useState("");
-    // const [answer, setAnswer] = useState("");
     const [messages, setMessages] = useState<
     { role: "user" | "assistant"; text: string }[]
     >([]);
+    const [loading, setLoading] = useState(false);
 
     async function askQuestion() {
         if (!question) return;
+
         setMessages(prev => [
             ...prev,
             { role: "user", text: question }
         ]);
+
+        setLoading(true);
+
         const response = await fetch(
             "http://localhost:5000/api/documents/chat",
             {
@@ -27,10 +31,13 @@ function ChatAboutDocument() {
         );
 
         const data = await response.json();
+
         setMessages(prev => [
             ...prev,
             { role: "assistant", text: data.answer }
         ]);
+
+        setLoading(false);
         setQuestion("");
     }
 
@@ -47,6 +54,12 @@ function ChatAboutDocument() {
                         {msg.text}
                     </div>
                 ))}
+
+                {loading && (
+                    <div className="message assistant thinking">
+                        DocuIQ is thinking...
+                    </div>
+                )}
             </div>
         </div>
         <div className="input-area">
