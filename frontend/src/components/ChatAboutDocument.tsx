@@ -41,15 +41,11 @@ function ChatAboutDocument() {
         </div>
         
         <div className="section-content">
-            <div className="answer-area">
-                {messages.map((message, index) => (
-                    <div key={index}>
-                        <h3>
-                            {message.role === "user" ? "You" : "DocuIQ"}
-                        </h3>
-
-                        <p>{message.text}</p>
-                    </div> 
+            <div className="answer-area">   
+                {messages.map((msg, index) => (
+                    <div key={index} className={`message ${msg.role}`}>
+                        {msg.text}
+                    </div>
                 ))}
             </div>
         </div>
