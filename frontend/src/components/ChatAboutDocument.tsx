@@ -6,6 +6,7 @@ function ChatAboutDocument() {
     { role: "user" | "assistant"; text: string }[]
     >([]);
     const [loading, setLoading] = useState(false);
+    
 
     async function askQuestion() {
         if (!question) return;
@@ -62,7 +63,13 @@ function ChatAboutDocument() {
                 )}
             </div>
         </div>
-        <div className="input-area">
+        <form 
+            className="input-area" 
+            onSubmit={(e) => {
+                e.preventDefault();
+                askQuestion();
+            }}
+        >
             <input
                 type="text"
                 value={question}
@@ -70,10 +77,10 @@ function ChatAboutDocument() {
                 placeholder="Ask a question..."
             />
 
-            <button onClick={askQuestion}>
+            <button type="submit">
                 Ask
             </button>
-        </div>
+        </form>
     </section>
     );
 }

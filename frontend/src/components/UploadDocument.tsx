@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 type UploadDocumentProps = {
     setSummary: (summary: string) => void;
 };
 
+
 function UploadDocument({ setSummary }: UploadDocumentProps) {
     const [file, setFile] = useState<File | null>(null);
+    const uploadButtonRef = useRef<HTMLButtonElement>(null);
+
 
     const handleUpload = async () => {
         if (!file) {
@@ -37,11 +40,12 @@ function UploadDocument({ setSummary }: UploadDocumentProps) {
                 onChange={(e) => {
                     if (e.target.files) {
                         setFile(e.target.files[0]);
+                        uploadButtonRef.current?.focus();
                     }
                 }}
             />
 
-            <button onClick={handleUpload}>
+            <button onClick={handleUpload} ref={uploadButtonRef}>
                 Upload PDF
             </button>
         </div>
