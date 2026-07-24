@@ -30,3 +30,27 @@ export async function getDocument(id: number) {
 
     return result.rows[0];
 }
+
+export async function deleteDocument(id: number) {
+    const result = await pool.query(
+     `
+     DELETE FROM documents
+     WHERE id = $1;
+     `
+    );
+}
+
+export async function updateDocumentSummary(
+    id: number,
+    summary: string
+) {
+    await pool.query(
+        `
+        UPDATE documents
+        SET summary = $1,
+            updated_at = CURRENT_TIMESTAMP
+        WHERE id = $2
+        `,
+        [summary, id]
+    );
+}
