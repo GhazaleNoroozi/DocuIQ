@@ -3,6 +3,7 @@ import { extractTextFromPDF } from "../services/pdfService";
 import { getDocument, saveDocument } from "../services/documentService";
 import { summarize } from "../services/llmService";
 import { answerQuestion } from "../services/llmService";
+import fs from "fs/promises";
 
 export async function uploadDocument(
     req: Request,
@@ -15,12 +16,15 @@ export async function uploadDocument(
             });
         }
 
-        const text = await extractTextFromPDF(req.file.path);
+        const text = await extractTextFromPDF(req.file.path)
+        const summary = await summarize(text);
         const documentId = await saveDocument(
             req.file.originalname,
-            text
+            text,
+            summary
         );
-        const summary = await summarize(text);
+
+        await fs.unlink(req.file.path);
 
         return res.json({
             message: "Document processed successfully",
