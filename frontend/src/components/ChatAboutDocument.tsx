@@ -1,6 +1,10 @@
 import { useState } from "react";
 
-function ChatAboutDocument() {
+type ChatAboutDocumentProps = {
+    documentId: number | null;
+};
+
+function ChatAboutDocument({ documentId }: ChatAboutDocumentProps) {
     const [question, setQuestion] = useState("");
     const [messages, setMessages] = useState<
     { role: "user" | "assistant"; text: string }[]
@@ -27,6 +31,7 @@ function ChatAboutDocument() {
                 },
                 body: JSON.stringify({
                     question,
+                    documentId,
                 }),
             }
         );

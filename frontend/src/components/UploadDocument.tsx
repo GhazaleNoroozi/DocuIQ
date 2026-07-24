@@ -2,10 +2,11 @@ import { useState, useRef } from "react";
 
 type UploadDocumentProps = {
     setSummary: (summary: string) => void;
+    setDocumentId: (documentId: number) => void;
 };
 
 
-function UploadDocument({ setSummary }: UploadDocumentProps) {
+function UploadDocument({ setSummary, setDocumentId }: UploadDocumentProps) {
     const [file, setFile] = useState<File | null>(null);
     const uploadButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -29,6 +30,7 @@ function UploadDocument({ setSummary }: UploadDocumentProps) {
 
         const data = await response.json();
         setSummary(data.summary);
+        setDocumentId(data.documentId);
         console.log(data);
     };
 

@@ -7,6 +7,8 @@ import "./App.css";
 function App() {
   const [message, setMessage] = useState("");
   const [summary, setSummary] = useState<string>("");
+  const [documentId, setDocumentId] = useState<number | null>(null);
+  
 
   useEffect(() => {
     fetch("http://localhost:5000/api/message")
@@ -23,13 +25,13 @@ function App() {
         <p>{message}</p>
       </header>
 
-      <UploadDocument setSummary={setSummary} />
+      <UploadDocument setSummary={setSummary} setDocumentId={setDocumentId}/>
 
       {summary && (
         <Summary summary={summary} />
         )}
 
-      <ChatDocument />
+      <ChatDocument documentId={documentId}/>
     </div>
   );
 }

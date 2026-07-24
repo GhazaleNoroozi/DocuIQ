@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { extractTextFromPDF } from "../services/pdfService";
-import { getCurrentDocument, setCurrentDocument } from "../services/documentService";
+import { getDocument, saveDocument } from "../services/documentService";
 import { summarize } from "../services/llmService";
 import { answerQuestion } from "../services/llmService";
 
@@ -16,13 +16,17 @@ export async function uploadDocument(
         }
 
         const text = await extractTextFromPDF(req.file.path);
-        setCurrentDocument(text);
+        const documentId = await saveDocument(
+            req.file.originalname,
+            text
+        );
         const summary = await summarize(text);
 
         return res.json({
             message: "Document processed successfully",
-            text: text,
-            summary: summary
+            documentId,
+            text,
+            summary
         });
 
     } catch (error) {
@@ -39,9 +43,9 @@ export async function chatAboutDocument(
     res: Response
 ){
     try {     
-        const question = req.body.question;
-        const document = getCurrentDocument();   
-        const answer = await answerQuestion(document, question);
+        const { question, documentId } = req.body;
+        const document = await getDocument(documentId);  
+        const answer = await answerQuestion(document.content, question);
 
         return res.json({
             message: "AI assistant responded successfully",
