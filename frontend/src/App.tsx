@@ -1,38 +1,39 @@
-import { useEffect, useState } from "react";
-import UploadDocument from "./components/UploadDocument";
-import ChatDocument from "./components/ChatAboutDocument";
-import Summary from "./components/Summary";
-import "./App.css";
+import {
+  BrowserRouter,
+  Routes,
+  Route
+} from "react-router-dom";
+
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+
 
 function App() {
-  const [message, setMessage] = useState("");
-  const [summary, setSummary] = useState<string>("");
-  const [documentId, setDocumentId] = useState<number | null>(null);
-  
-
-  useEffect(() => {
-    fetch("http://localhost:5000/api/message")
-      .then(res => res.json())
-      .then(data => {
-        setMessage(data.message);
-      });
-  }, []);
 
   return (
-    <div className="app">
-      <header>
-        <h1>DocuIQ</h1>
-        <p>{message}</p>
-      </header>
+    <BrowserRouter>
 
-      <UploadDocument setSummary={setSummary} setDocumentId={setDocumentId}/>
+      <Routes>
 
-      {summary && (
-        <Summary summary={summary} />
-        )}
+        <Route 
+          path="/signup"
+          element={<Signup />}
+        />
 
-      <ChatDocument documentId={documentId}/>
-    </div>
+        <Route
+          path="/login"
+          element={<Login />}
+        />
+
+        <Route
+          path="/dashboard"
+          element={<Dashboard />}
+        />
+
+      </Routes>
+
+    </BrowserRouter>
   );
 }
 

@@ -1,0 +1,63 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import UploadDocument from "../components/UploadDocument";
+import ChatDocument from "../components/ChatAboutDocument";
+import Summary from "../components/Summary";
+
+import "../App.css";
+
+
+function Dashboard() {
+
+    const navigate = useNavigate();
+
+    const [message, setMessage] = useState("");
+    const [summary, setSummary] = useState<string>("");
+    const [documentId, setDocumentId] = useState<number | null>(null);
+
+
+    function logout() {
+        localStorage.removeItem("token");
+        navigate("/login");
+    }
+
+
+    useEffect(() => {
+        fetch("http://localhost:5000/api/message")
+            .then(res => res.json())
+            .then(data => {
+                setMessage(data.message);
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    }, []);
+
+
+    return (
+        <div className="app">
+            <header>
+                <h1>DocuIQ</h1>
+                <p>{message}</p>
+                <button onClick={logout}>
+                    Logout
+                </button>
+            </header>
+
+            <UploadDocument
+                setSummary={setSummary}
+                setDocumentId={setDocumentId}
+            />
+
+            {summary && (
+                <Summary summary={summary} />
+            )}
+
+            <ChatDocument documentId={documentId}/>
+        </div>
+    );
+}
+
+
+export default Dashboard;
