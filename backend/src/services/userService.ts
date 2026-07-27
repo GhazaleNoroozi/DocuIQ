@@ -1,4 +1,5 @@
 import { pool } from "../db";
+import bcrypt from "bcrypt";
 
 export async function createUser(
     email: string,
@@ -17,6 +18,7 @@ export async function createUser(
 }
 
 
+
 export async function getUserByEmail(email: string) {
     const result = await pool.query(
         `
@@ -28,4 +30,26 @@ export async function getUserByEmail(email: string) {
     );
 
     return result.rows[0];
+}
+
+export async function validateUser(
+    email: string,
+    password: string
+) {
+    const user = await getUserByEmail(email);
+
+    if (!user) {
+        return null;
+    }
+
+    const passwordMatch = await bcrypt.compare(
+        password,
+        user.password
+    );
+
+    if (!passwordMatch) {
+        return null;
+    }
+
+    return user;
 }
