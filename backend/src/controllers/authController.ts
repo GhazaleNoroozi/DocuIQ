@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
+import { createUser, getUserByEmail} from "../services/userService";
 import bcrypt from "bcrypt";
-import { createUser, getUserByEmail } from "../services/userService";
+import { authenticateUser, generateToken } from "../services/authService";
 
 
 export async function signup(
@@ -41,6 +42,39 @@ export async function signup(
 
         res.status(500).json({
             message: "Signup failed"
+        });
+    }
+}
+
+export async function login(
+    req: Request,
+    res: Response
+) {
+     try {
+        const { email, password } = req.body;
+        const user = await authenticateUser(
+            email,
+            password
+        );
+
+        if (!user) {
+            return res.status(401).json({
+                message: "Invalid email or password"
+            });
+        }
+
+        const token = generateToken(user);
+
+        res.json({
+            message: "Login successful",
+            token
+        });
+
+    } catch (error) {
+        console.error(error);
+
+        res.status(500).json({
+            message: "login failed"
         });
     }
 }
