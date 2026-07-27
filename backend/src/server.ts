@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import documentRoutes from "./routes/documentRoutes";
+import authRoutes from "./routes/authRoutes";
 import "dotenv/config";
 import { pool } from "./db";
 
@@ -16,15 +17,7 @@ app.get("/api/message", (req, res) => {
 });
 
 app.use("/api/documents", documentRoutes);
-
-pool.query("SELECT NOW()", (err, res) => {
-    if (err) {
-        console.error(err);
-    } else {
-        console.log(res.rows);
-    }
-});
-
+app.use("/api/auth", authRoutes);
 
 pool.query("SELECT NOW()", (err, result) => {
     if (err) {
