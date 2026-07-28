@@ -9,6 +9,7 @@ type UploadDocumentProps = {
 function UploadDocument({ setSummary, setDocumentId }: UploadDocumentProps) {
     const [file, setFile] = useState<File | null>(null);
     const uploadButtonRef = useRef<HTMLButtonElement>(null);
+    const API_URL = import.meta.env.VITE_API_URL;
 
 
     const handleUpload = async () => {
@@ -21,7 +22,7 @@ function UploadDocument({ setSummary, setDocumentId }: UploadDocumentProps) {
         formData.append("file", file);
 
         const response = await fetch(
-            "http://localhost:5000/api/documents/upload",
+            `${API_URL}/api/documents/upload`,
             {
                 method: "POST",
                 body: formData,

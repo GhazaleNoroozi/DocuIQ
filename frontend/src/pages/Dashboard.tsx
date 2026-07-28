@@ -15,6 +15,7 @@ function Dashboard() {
     const [message, setMessage] = useState("");
     const [summary, setSummary] = useState<string>("");
     const [documentId, setDocumentId] = useState<number | null>(null);
+    const API_URL = import.meta.env.VITE_API_URL;
 
 
     function logout() {
@@ -24,7 +25,7 @@ function Dashboard() {
 
 
     useEffect(() => {
-        fetch("http://localhost:5000/api/message")
+        fetch(`${API_URL}/api/message`)
             .then(res => res.json())
             .then(data => {
                 setMessage(data.message);

@@ -10,6 +10,7 @@ function ChatAboutDocument({ documentId }: ChatAboutDocumentProps) {
     { role: "user" | "assistant"; text: string }[]
     >([]);
     const [loading, setLoading] = useState(false);
+    const API_URL = import.meta.env.VITE_API_URL;
     
 
     async function askQuestion() {
@@ -23,7 +24,7 @@ function ChatAboutDocument({ documentId }: ChatAboutDocumentProps) {
         setLoading(true);
 
         const response = await fetch(
-            "http://localhost:5000/api/documents/chat",
+            `${API_URL}/api/documents/chat`,
             {
                 method: "POST",
                 headers: {
