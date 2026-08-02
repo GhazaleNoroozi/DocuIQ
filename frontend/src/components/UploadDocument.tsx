@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { apiFetch } from "../services/api";
 
 type UploadDocumentProps = {
     setSummary: (summary: string) => void;
@@ -21,18 +22,15 @@ function UploadDocument({ setSummary, setDocumentId }: UploadDocumentProps) {
         const formData = new FormData();
         formData.append("file", file);
 
-        const token = localStorage.getItem("token");
-
-        const response = await fetch(
+        const response = await apiFetch(
             `${API_URL}/api/documents/upload`,
             {
                 method: "POST",
-                headers: {
-                    Authorization: `Bearer ${token}`
-                },
                 body: formData,
             }
         );
+
+        if (!response) return;
 
         const data = await response.json();
         setSummary(data.summary);

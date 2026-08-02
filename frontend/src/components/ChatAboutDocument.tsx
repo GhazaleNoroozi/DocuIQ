@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { apiFetch } from "../services/api";
 
 type ChatAboutDocumentProps = {
     documentId: number | null;
@@ -22,21 +23,22 @@ function ChatAboutDocument({ documentId }: ChatAboutDocumentProps) {
         ]);
 
         setLoading(true);
-        const token = localStorage.getItem("token");
-        const response = await fetch(
+
+        const response = await apiFetch(
             `${API_URL}/api/documents/chat`,
             {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
                     question,
-                    documentId,
-                }),
+                    documentId
+                })
             }
         );
+
+        if (!response) return;
 
         const data = await response.json();
 
