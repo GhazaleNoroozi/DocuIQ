@@ -34,7 +34,7 @@ export function generateToken(user: any) {
         },
         process.env.JWT_SECRET!,
         {
-            expiresIn: "1h"
+            expiresIn: "7d"
         }
     );
 }

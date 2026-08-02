@@ -1,8 +1,7 @@
 import { Router } from "express";
 import upload from "../middlewares/uploadMiddleware";
 import { authMiddleware } from "../middlewares/authMiddleware";
-import { uploadDocument } from "../controllers/documentController";
-import { chatAboutDocument } from "../controllers/documentController";
+import { uploadDocument, chatAboutDocument, getUserDocuments } from "../controllers/documentController";
 
 const router = Router();
 
@@ -18,4 +17,11 @@ router.post(
     authMiddleware,
     chatAboutDocument
 );
+
+router.get(
+    "/",
+    authMiddleware,
+    getUserDocuments
+);
+
 export default router;

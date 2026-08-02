@@ -27,6 +27,7 @@ export function authMiddleware(
 
 
     const token = authHeader.split(" ")[1];
+    console.log("Token received:", token);
 
 
     if (!token) {
@@ -46,6 +47,8 @@ export function authMiddleware(
             email: string;
         };
 
+        console.log("Decoded:", decoded);
+
 
         req.user = decoded;
 
@@ -53,7 +56,8 @@ export function authMiddleware(
         next();
 
     } catch (error) {
-
+        console.log("JWT ERROR:", error);
+        
         return res.status(401).json({
             message: "Invalid or expired token"
         });

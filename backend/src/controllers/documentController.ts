@@ -1,9 +1,8 @@
 import { Response } from "express";
 import { AuthRequest } from "../middlewares/authMiddleware";
 import { extractTextFromPDF } from "../services/pdfService";
-import { getDocument, saveDocument } from "../services/documentService";
-import { summarize } from "../services/llmService";
-import { answerQuestion } from "../services/llmService";
+import { getDocument, saveDocument, getDocumentsByUserId} from "../services/documentService";
+import { summarize, answerQuestion } from "../services/llmService";
 import fs from "fs/promises";
 
 export async function uploadDocument(
@@ -66,6 +65,28 @@ export async function chatAboutDocument(
 
         return res.status(500).json({
             message: "Failed to connect with the AI Assistant"
+        });
+    }
+}
+
+export async function getUserDocuments(
+    req: AuthRequest,
+    res: Response
+) {
+    try {
+        const documents = await getDocumentsByUserId(
+            req.user!.userId
+        );
+
+        return res.json({
+            documents
+        });
+
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            message: "Failed to fetch documents"
         });
     }
 }

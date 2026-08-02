@@ -63,3 +63,22 @@ export async function updateDocumentSummary(
         [summary, id]
     );
 }
+
+export async function getDocumentsByUserId(
+    userId: number
+){
+    const result = await pool.query(
+        `
+            SELECT
+                id,
+                filename,
+                created_at
+            FROM documents
+            WHERE user_id = $1
+            ORDER BY created_at DESC
+        `,
+        [userId]
+    );
+
+    return result.rows;
+}
