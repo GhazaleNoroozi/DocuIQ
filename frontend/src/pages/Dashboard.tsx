@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import UploadDocument from "../components/UploadDocument";
 import ChatDocument from "../components/ChatAboutDocument";
 import Summary from "../components/Summary";
+import DocumentsList from "../components/DocumentsList";
 
 import "../App.css";
 
@@ -45,7 +46,7 @@ function Dashboard() {
                     Logout
                 </button>
             </header>
-
+            <DocumentsList />
             <UploadDocument
                 setSummary={setSummary}
                 setDocumentId={setDocumentId}
