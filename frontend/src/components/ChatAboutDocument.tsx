@@ -22,13 +22,14 @@ function ChatAboutDocument({ documentId }: ChatAboutDocumentProps) {
         ]);
 
         setLoading(true);
-
+        const token = localStorage.getItem("token");
         const response = await fetch(
             `${API_URL}/api/documents/chat`,
             {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
                 },
                 body: JSON.stringify({
                     question,

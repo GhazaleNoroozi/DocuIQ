@@ -21,10 +21,15 @@ function UploadDocument({ setSummary, setDocumentId }: UploadDocumentProps) {
         const formData = new FormData();
         formData.append("file", file);
 
+        const token = localStorage.getItem("token");
+
         const response = await fetch(
             `${API_URL}/api/documents/upload`,
             {
                 method: "POST",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
                 body: formData,
             }
         );

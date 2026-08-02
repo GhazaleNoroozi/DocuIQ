@@ -1,4 +1,5 @@
-import { Request, Response } from "express";
+import { Response } from "express";
+import { AuthRequest } from "../middlewares/authMiddleware";
 import { extractTextFromPDF } from "../services/pdfService";
 import { getDocument, saveDocument } from "../services/documentService";
 import { summarize } from "../services/llmService";
@@ -6,7 +7,7 @@ import { answerQuestion } from "../services/llmService";
 import fs from "fs/promises";
 
 export async function uploadDocument(
-    req: Request,
+    req: AuthRequest,
     res: Response
 ) {
     try {
@@ -16,11 +17,12 @@ export async function uploadDocument(
             });
         }
 
-        const text = await extractTextFromPDF(req.file.path)
-        const summary = await summarize(text);
+        const content = await extractTextFromPDF(req.file.path)
+        const summary = await summarize(content);
         const documentId = await saveDocument(
+            req.user!.userId,
             req.file.originalname,
-            text,
+            content,
             summary
         );
 
@@ -29,7 +31,7 @@ export async function uploadDocument(
         return res.json({
             message: "Document processed successfully",
             documentId,
-            text,
+            content,
             summary
         });
 
@@ -43,12 +45,15 @@ export async function uploadDocument(
 }
 
 export async function chatAboutDocument(
-    req: Request,
+    req: AuthRequest,
     res: Response
 ){
     try {     
         const { question, documentId } = req.body;
-        const document = await getDocument(documentId);  
+        const document = await getDocument(
+            documentId,
+            req.user!.userId
+        );
         const answer = await answerQuestion(document.content, question);
 
         return res.json({

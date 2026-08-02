@@ -1,31 +1,40 @@
 import { pool } from "../db";
 
 export async function saveDocument(
+    userId: number,
     filename: string,
     content: string,
     summary?: string
 ) {
     const result = await pool.query(
         `
-        INSERT INTO documents (filename, content, summary)
-        VALUES ($1, $2, $3)
-        RETURNING id
+            INSERT INTO documents
+            (user_id, filename, content, summary)
+            VALUES ($1, $2, $3, $4)
+            RETURNING id;
         `,
-        [filename, content, summary]
+        [userId, filename, content, summary]
     );
 
     return result.rows[0].id;
 }
 
 
-export async function getDocument(id: number) {
+export async function getDocument(
+    id: number,
+    userId: number
+){
     const result = await pool.query(
         `
-        SELECT *
-        FROM documents
-        WHERE id = $1
+            SELECT *
+            FROM documents
+            WHERE id = $1
+            AND user_id = $2
         `,
-        [id]
+        [
+            id,
+            userId
+        ]
     );
 
     return result.rows[0];
