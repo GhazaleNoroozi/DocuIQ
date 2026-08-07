@@ -68,6 +68,7 @@ function Dashboard() {
             </header>
             <DocumentsList
                 setDocumentId={setDocumentId}
+                selectedDocumentId={documentId}
             />
             <UploadDocument
                 setSummary={setSummary}

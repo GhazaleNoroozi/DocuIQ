@@ -20,7 +20,12 @@ function ChatAboutDocument({ documentId }: ChatAboutDocumentProps) {
     
 
     async function askQuestion() {
-        if (!question) return;
+        if (!question.trim()) return;
+
+        if (!documentId) {
+            alert("Please select a document first");
+            return;
+        }
 
         setMessages(prev => [
             ...prev,

@@ -11,11 +11,12 @@ type Document = {
 
 type DocumentsListProps = {
     setDocumentId: (id: number) => void;
+    selectedDocumentId: number | null;
 };
 
-
 function DocumentsList({
-    setDocumentId
+    setDocumentId,
+    selectedDocumentId
 }: DocumentsListProps) {
 
     const [documents, setDocuments] = useState<Document[]>([]);
@@ -45,9 +46,14 @@ function DocumentsList({
                 <div
                     key={doc.id}
                     onClick={() => setDocumentId(doc.id)}
+                    className={
+                        selectedDocumentId === doc.id
+                            ? "document-card selected-document"
+                            : "document-card"
+                    }
                 >
                     {doc.filename}
-                </div>
+                </div>     
             ))}
 
         </div>

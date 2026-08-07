@@ -129,3 +129,27 @@ header h1 {
   color: white;
   border-bottom-left-radius: 3px;
 }
+
+.selected-document {
+    font-weight: bold;
+    border: 2px solid black;
+}
+
+.document-card {
+    padding: 12px 16px;
+    margin: 8px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.document-card:hover {
+    background-color: #f3f3f3;
+    transform: translateY(-1px);
+}
+
+.selected-document {
+    border: 2px solid #333;
+    font-weight: bold;
+}
