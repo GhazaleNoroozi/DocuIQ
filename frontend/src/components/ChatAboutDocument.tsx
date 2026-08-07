@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { apiFetch } from "../services/api";
 
 type ChatAboutDocumentProps = {
@@ -11,7 +11,12 @@ function ChatAboutDocument({ documentId }: ChatAboutDocumentProps) {
     { role: "user" | "assistant"; text: string }[]
     >([]);
     const [loading, setLoading] = useState(false);
+    
     const API_URL = import.meta.env.VITE_API_URL;
+    
+        useEffect(() => {
+            setMessages([]);
+        }, [documentId]);
     
 
     async function askQuestion() {

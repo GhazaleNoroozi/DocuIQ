@@ -5,7 +5,7 @@ import UploadDocument from "../components/UploadDocument";
 import ChatDocument from "../components/ChatAboutDocument";
 import Summary from "../components/Summary";
 import DocumentsList from "../components/DocumentsList";
-
+import { getDocument } from "../services/documentService";  
 import "../App.css";
 
 
@@ -15,6 +15,7 @@ function Dashboard() {
 
     const [message, setMessage] = useState("");
     const [summary, setSummary] = useState<string>("");
+    const [selectedDocument, setSelectedDocument] = useState<any>(null);
     const [documentId, setDocumentId] = useState<number | null>(null);
     const API_URL = import.meta.env.VITE_API_URL;
 
@@ -36,6 +37,25 @@ function Dashboard() {
             });
     }, []);
 
+    useEffect(() => {
+
+        async function loadSelectedDocument() {
+
+            if (!documentId) {
+                return;
+            }
+
+            const document = await getDocument(documentId);
+
+            if (document) {
+                setSelectedDocument(document);
+                setSummary(document.summary);
+            }
+        }
+
+        loadSelectedDocument();
+
+    }, [documentId]);
 
     return (
         <div className="app">
