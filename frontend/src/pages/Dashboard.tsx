@@ -46,7 +46,9 @@ function Dashboard() {
                     Logout
                 </button>
             </header>
-            <DocumentsList />
+            <DocumentsList
+                setDocumentId={setDocumentId}
+            />
             <UploadDocument
                 setSummary={setSummary}
                 setDocumentId={setDocumentId}

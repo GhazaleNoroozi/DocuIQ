@@ -9,7 +9,14 @@ type Document = {
 };
 
 
-function DocumentsList() {
+type DocumentsListProps = {
+    setDocumentId: (id: number) => void;
+};
+
+
+function DocumentsList({
+    setDocumentId
+}: DocumentsListProps) {
 
     const [documents, setDocuments] = useState<Document[]>([]);
 
@@ -35,7 +42,10 @@ function DocumentsList() {
             <h2>Your Documents</h2>
 
             {documents.map((doc) => (
-                <div key={doc.id}>
+                <div
+                    key={doc.id}
+                    onClick={() => setDocumentId(doc.id)}
+                >
                     {doc.filename}
                 </div>
             ))}
