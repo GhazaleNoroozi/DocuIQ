@@ -90,3 +90,39 @@ export async function getUserDocuments(
         });
     }
 }
+
+export async function getSingleDocument(
+    req: AuthRequest,
+    res: Response
+) {
+    try {
+
+        const documentId = Number(req.params.id);
+
+        const document = await getDocument(
+            documentId,
+            req.user!.userId
+        );
+
+
+        if (!document) {
+            return res.status(404).json({
+                message: "Document not found"
+            });
+        }
+
+
+        return res.json({
+            document
+        });
+
+
+    } catch (error) {
+
+        console.error(error);
+
+        return res.status(500).json({
+            message: "Failed to fetch document"
+        });
+    }
+}

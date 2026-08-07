@@ -1,7 +1,12 @@
 import { Router } from "express";
 import upload from "../middlewares/uploadMiddleware";
 import { authMiddleware } from "../middlewares/authMiddleware";
-import { uploadDocument, chatAboutDocument, getUserDocuments } from "../controllers/documentController";
+import {
+    uploadDocument,
+    chatAboutDocument,
+    getUserDocuments,
+    getSingleDocument
+} from "../controllers/documentController";
 
 const router = Router();
 
@@ -22,6 +27,12 @@ router.get(
     "/",
     authMiddleware,
     getUserDocuments
+);
+
+router.get(
+    "/:id",
+    authMiddleware,
+    getSingleDocument
 );
 
 export default router;
