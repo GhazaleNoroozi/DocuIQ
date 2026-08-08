@@ -5,10 +5,12 @@ import {
     getDocument,
     saveDocument,
     getDocumentsByUserId,
-    deleteDocument
+    deleteDocument,
+    getDocumentByHash
 } from "../services/documentService";
 import { summarize, answerQuestion } from "../services/llmService";
 import fs from "fs/promises";
+import crypto from "crypto";
 
 export async function uploadDocument(
     req: AuthRequest,
@@ -21,6 +23,13 @@ export async function uploadDocument(
             });
         }
 
+        const fileBuffer = await fs.readFile(req.file.path);
+
+        const documentHash = crypto
+            .createHash("sha256")
+            .update(fileBuffer)
+            .digest("hex");
+        
         const content = await extractTextFromPDF(req.file.path)
         const summary = await summarize(content);
         const documentId = await saveDocument(
@@ -29,6 +38,8 @@ export async function uploadDocument(
             content,
             summary
         );
+
+        
 
         await fs.unlink(req.file.path);
 

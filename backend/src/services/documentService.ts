@@ -92,3 +92,23 @@ export async function getDocumentsByUserId(
 
     return result.rows;
 }
+
+export async function getDocumentByHash(
+    userId: number,
+    documentHash: string
+) {
+    const result = await pool.query(
+        `
+        SELECT *
+        FROM documents
+        WHERE user_id = $1
+        AND document_hash = $2
+        `,
+        [
+            userId,
+            documentHash
+        ]
+    );
+
+    return result.rows[0];
+}
