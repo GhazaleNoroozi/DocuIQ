@@ -28,3 +28,19 @@ export async function getDocument(id: number) {
 
     return data.document;
 }
+
+export async function deleteDocument(id: number) {
+
+    const response = await apiFetch(
+        `${API_URL}/api/documents/${id}`,
+        {
+            method: "DELETE"
+        }
+    );
+
+    if (!response) {
+        return false;
+    }
+
+    return true;
+}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getDocuments } from "../services/documentService";
+import { getDocuments, deleteDocument } from "../services/documentService";
 
 
 type Document = {
@@ -37,6 +37,24 @@ function DocumentsList({
 
     }, []);
 
+    async function handleDelete(id: number) {
+
+        const confirmed = window.confirm(
+            "Are you sure you want to delete this document?"
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        const success = await deleteDocument(id);
+
+        if (success) {
+            setDocuments(prev =>
+                prev.filter(doc => doc.id !== id)
+            );
+        }
+    }
 
     return (
         <div>
@@ -45,15 +63,27 @@ function DocumentsList({
             {documents.map((doc) => (
                 <div
                     key={doc.id}
-                    onClick={() => setDocumentId(doc.id)}
                     className={
                         selectedDocumentId === doc.id
                             ? "document-card selected-document"
                             : "document-card"
                     }
+                    onClick={() => setDocumentId(doc.id)}
                 >
-                    {doc.filename}
-                </div>     
+                    <span>
+                        {doc.filename}
+                    </span>
+
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            handleDelete(doc.id);
+                        }}
+                    >
+                        Delete
+                    </button>
+
+                </div>
             ))}
 
         </div>
