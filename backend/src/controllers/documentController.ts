@@ -1,7 +1,12 @@
 import { Response } from "express";
 import { AuthRequest } from "../middlewares/authMiddleware";
 import { extractTextFromPDF } from "../services/pdfService";
-import { getDocument, saveDocument, getDocumentsByUserId} from "../services/documentService";
+import { 
+    getDocument,
+    saveDocument,
+    getDocumentsByUserId,
+    deleteDocument
+} from "../services/documentService";
 import { summarize, answerQuestion } from "../services/llmService";
 import fs from "fs/promises";
 
@@ -123,6 +128,39 @@ export async function getSingleDocument(
 
         return res.status(500).json({
             message: "Failed to fetch document"
+        });
+    }
+}
+
+export async function deleteUserDocument(
+    req: AuthRequest,
+    res: Response
+) {
+    try {
+
+        const documentId = Number(req.params.id);
+
+        const deleted = await deleteDocument(
+            documentId,
+            req.user!.userId
+        );
+
+        if (!deleted) {
+            return res.status(404).json({
+                message: "Document not found"
+            });
+        }
+
+        return res.json({
+            message: "Document deleted successfully"
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        return res.status(500).json({
+            message: "Failed to delete document"
         });
     }
 }

@@ -40,13 +40,23 @@ export async function getDocument(
     return result.rows[0];
 }
 
-export async function deleteDocument(id: number) {
+export async function deleteDocument(
+    id: number,
+    userId: number
+) {
     const result = await pool.query(
-     `
-     DELETE FROM documents
-     WHERE id = $1;
-     `
+        `
+        DELETE FROM documents
+        WHERE id = $1
+        AND user_id = $2
+        `,
+        [
+            id,
+            userId
+        ]
     );
+
+    return result.rowCount;
 }
 
 export async function updateDocumentSummary(

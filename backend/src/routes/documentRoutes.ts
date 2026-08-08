@@ -5,7 +5,8 @@ import {
     uploadDocument,
     chatAboutDocument,
     getUserDocuments,
-    getSingleDocument
+    getSingleDocument,
+    deleteUserDocument
 } from "../controllers/documentController";
 
 const router = Router();
@@ -33,6 +34,12 @@ router.get(
     "/:id",
     authMiddleware,
     getSingleDocument
+);
+
+router.delete(
+    "/:id",
+    authMiddleware,
+    deleteUserDocument
 );
 
 export default router;
