@@ -9,6 +9,7 @@ import { getDocument } from "../services/documentService";
 import "../App.css";
 
 
+
 function Dashboard() {
 
     const navigate = useNavigate();
@@ -25,6 +26,12 @@ function Dashboard() {
         navigate("/login");
     }
 
+    function handleDocumentDeleted(id: number) {
+        if (documentId === id) {
+            setDocumentId(null);
+            setSummary("");
+        }
+    }
 
     useEffect(() => {
         fetch(`${API_URL}/api/message`)
@@ -69,6 +76,7 @@ function Dashboard() {
             <DocumentsList
                 setDocumentId={setDocumentId}
                 selectedDocumentId={documentId}
+                onDocumentDeleted={handleDocumentDeleted}
             />
             <UploadDocument
                 setSummary={setSummary}

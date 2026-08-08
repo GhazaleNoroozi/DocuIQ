@@ -12,11 +12,13 @@ type Document = {
 type DocumentsListProps = {
     setDocumentId: (id: number) => void;
     selectedDocumentId: number | null;
+    onDocumentDeleted: (id: number) => void;
 };
 
 function DocumentsList({
     setDocumentId,
-    selectedDocumentId
+    selectedDocumentId,
+    onDocumentDeleted
 }: DocumentsListProps) {
 
     const [documents, setDocuments] = useState<Document[]>([]);
@@ -53,6 +55,8 @@ function DocumentsList({
             setDocuments(prev =>
                 prev.filter(doc => doc.id !== id)
             );
+
+            onDocumentDeleted(id);
         }
     }
 
