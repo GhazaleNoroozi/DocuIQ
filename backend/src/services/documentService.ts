@@ -4,16 +4,23 @@ export async function saveDocument(
     userId: number,
     filename: string,
     content: string,
-    summary?: string
+    summary: string | undefined,
+    documentHash: string
 ) {
     const result = await pool.query(
         `
             INSERT INTO documents
-            (user_id, filename, content, summary)
-            VALUES ($1, $2, $3, $4)
+            (user_id, filename, content, summary, document_hash)
+            VALUES ($1, $2, $3, $4, $5)
             RETURNING id;
         `,
-        [userId, filename, content, summary]
+        [
+            userId,
+            filename,
+            content,
+            summary,
+            documentHash
+        ]
     );
 
     return result.rows[0].id;

@@ -29,6 +29,21 @@ export async function uploadDocument(
             .createHash("sha256")
             .update(fileBuffer)
             .digest("hex");
+
+        const existingDocument = await getDocumentByHash(
+            req.user!.userId,
+            documentHash
+        );
+
+        if (existingDocument) {
+            await fs.unlink(req.file.path);
+
+            return res.json({
+                message: "Document already exists",
+                documentId: existingDocument.id,
+                summary: existingDocument.summary
+            });
+        }
         
         const content = await extractTextFromPDF(req.file.path)
         const summary = await summarize(content);
@@ -36,7 +51,8 @@ export async function uploadDocument(
             req.user!.userId,
             req.file.originalname,
             content,
-            summary
+            summary,
+            documentHash
         );
 
         
